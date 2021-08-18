@@ -39,3 +39,8 @@ const (
 	ELSE     = "ELSE"
 	RETURN   = "RETURN"
 )
+
+type Token struct {
+	Type TokenType
+	Literal string
+}
