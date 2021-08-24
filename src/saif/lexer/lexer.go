@@ -1,7 +1,7 @@
 package lexer
 
 import (
-	"../token"
+	"Interpreter/src/saif/token"
 )
 
 type Lexer struct {
@@ -17,7 +17,7 @@ func New(input string) *Lexer {
 	return l
 }
 
-func (l *Lexer) NewToken() token.Token {
+func (l *Lexer) NextToken() token.Token {
 	var tok token.Token
 
 	l.skipWhitespace()
