@@ -1,7 +1,7 @@
 package lexer
 
 import (
-	"src/saif/token"
+	"../token"
 )
 
 type Lexer struct {
