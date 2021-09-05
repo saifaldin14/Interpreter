@@ -18,6 +18,12 @@ type Statement interface {
 	statementNode()
 }
 
+// All expression nodes implement this
+type Expression interface {
+	Node
+	expressionNode()
+}
+
 type Program struct {
 	Statements []Statement
 }
