@@ -4,10 +4,9 @@ import (
 	"Interpreter/src/saif/token"
 	"bytes"
 	"strings"
-	// "strings"
 )
 
-//The Base Node Interface
+// The base Node interface
 type Node interface {
 	TokenLiteral() string
 	String() string
@@ -39,6 +38,7 @@ func (p *Program) TokenLiteral() string {
 
 func (p *Program) String() string {
 	var out bytes.Buffer
+
 	for _, s := range p.Statements {
 		out.WriteString(s.String())
 	}
@@ -72,7 +72,7 @@ func (ls *LetStatement) String() string {
 }
 
 type ReturnStatement struct {
-	Token       token.Token
+	Token       token.Token // the 'return' token
 	ReturnValue Expression
 }
 
@@ -88,11 +88,12 @@ func (rs *ReturnStatement) String() string {
 	}
 
 	out.WriteString(";")
+
 	return out.String()
 }
 
 type ExpressionStatement struct {
-	Token      token.Token
+	Token      token.Token // the first token of the expression
 	Expression Expression
 }
 
@@ -102,12 +103,11 @@ func (es *ExpressionStatement) String() string {
 	if es.Expression != nil {
 		return es.Expression.String()
 	}
-
 	return ""
 }
 
 type BlockStatement struct {
-	Token      token.Token
+	Token      token.Token // the { token
 	Statements []Statement
 }
 
@@ -171,7 +171,7 @@ func (pe *PrefixExpression) String() string {
 }
 
 type InfixExpression struct {
-	Token    token.Token // The prefix token, e.g. !
+	Token    token.Token // The operator token, e.g. +
 	Left     Expression
 	Operator string
 	Right    Expression
@@ -192,7 +192,7 @@ func (oe *InfixExpression) String() string {
 }
 
 type IfExpression struct {
-	Token       token.Token
+	Token       token.Token // The 'if' token
 	Condition   Expression
 	Consequence *BlockStatement
 	Alternative *BlockStatement
@@ -206,7 +206,7 @@ func (ie *IfExpression) String() string {
 	out.WriteString("if")
 	out.WriteString(ie.Condition.String())
 	out.WriteString(" ")
-	out.WriteString(ie.Condition.String())
+	out.WriteString(ie.Consequence.String())
 
 	if ie.Alternative != nil {
 		out.WriteString("else ")
@@ -217,7 +217,7 @@ func (ie *IfExpression) String() string {
 }
 
 type FunctionLiteral struct {
-	Token      token.Token
+	Token      token.Token // The 'fn' token
 	Parameters []*Identifier
 	Body       *BlockStatement
 }
@@ -235,15 +235,15 @@ func (fl *FunctionLiteral) String() string {
 	out.WriteString(fl.TokenLiteral())
 	out.WriteString("(")
 	out.WriteString(strings.Join(params, ", "))
-	out.WriteString(")")
+	out.WriteString(") ")
 	out.WriteString(fl.Body.String())
 
 	return out.String()
 }
 
 type CallExpression struct {
-	Token     token.Token
-	Function  Expression
+	Token     token.Token // The '(' token
+	Function  Expression  // Identifier or FunctionLiteral
 	Arguments []Expression
 }
 
